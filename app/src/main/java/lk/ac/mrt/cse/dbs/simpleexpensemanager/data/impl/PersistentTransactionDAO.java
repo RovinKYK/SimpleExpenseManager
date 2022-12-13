@@ -39,6 +39,7 @@ public class PersistentTransactionDAO implements TransactionDAO {
     private DBHandler dbHandler;
 
     public PersistentTransactionDAO(Context context) throws ParseException {
+        //Transactions in database loaded as a list and stored in transactions list
         dbHandler = DBHandler.getDBHandler(context);
         transactions = dbHandler.getAllTransactions();
     }
@@ -47,8 +48,7 @@ public class PersistentTransactionDAO implements TransactionDAO {
     public void logTransaction(Date date, String accountNo, ExpenseType expenseType, double amount) {
         Transaction transaction = new Transaction(date, accountNo, expenseType, amount);
         transactions.add(transaction);
-        dbHandler.logTransaction(date, accountNo, expenseType, amount);
-
+        dbHandler.logTransaction(date, accountNo, expenseType, amount); //Transaction added to the database
     }
 
     @Override

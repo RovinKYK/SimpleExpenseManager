@@ -17,13 +17,16 @@ import lk.ac.mrt.cse.dbs.simpleexpensemanager.data.model.Account;
 import lk.ac.mrt.cse.dbs.simpleexpensemanager.data.model.ExpenseType;
 import lk.ac.mrt.cse.dbs.simpleexpensemanager.data.model.Transaction;
 
+//This is a helper class handling all interactions with the database
 public class DBHandler extends SQLiteOpenHelper {
     private static DBHandler dbHandler;
 
+    //Constructor made private
     private DBHandler(@Nullable Context context) {
         super(context, "200543U", null, 1);
     }
 
+    //DBHandler made a singleton to ensure only one instance created
     public static DBHandler getDBHandler(@Nullable Context context) {
         if (dbHandler == null) {
             dbHandler = new DBHandler(context);
@@ -31,6 +34,7 @@ public class DBHandler extends SQLiteOpenHelper {
         return dbHandler;
     }
 
+    //Creating tables in the first time when app is opened
     @Override
     public void onCreate(SQLiteDatabase database) {
         String createAccTable = "CREATE TABLE Accounts(Account_No TEXT PRIMARY KEY, Bank TEXT, Account_Holder TEXT, Balance REAL)";
@@ -42,6 +46,7 @@ public class DBHandler extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {}
 
+    //Returning all acoounts in the database as a list
     public List<Account> getAllAccounts() {
         List<Account> initialAccounts = new ArrayList<>();
         String getAllAccounts = "SELECT * FROM Accounts";
@@ -59,6 +64,7 @@ public class DBHandler extends SQLiteOpenHelper {
         return initialAccounts;
     }
 
+    //Adding a new account to the database
     public void addAccount(Account account) {
         SQLiteDatabase database = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -72,6 +78,7 @@ public class DBHandler extends SQLiteOpenHelper {
         database.close();
     }
 
+    //Removing an account from the database
     public void removeAccount(String accountNo) {
         SQLiteDatabase database = this.getWritableDatabase();
         String deleteAccount = "DELETE FROM Accounts WHERE Account_No = '" + accountNo + "'";
@@ -79,6 +86,7 @@ public class DBHandler extends SQLiteOpenHelper {
         database.close();
     }
 
+    //Updating the balance column of an account entry in the database
     public void updateAccountBalance(Account account) {
         SQLiteDatabase database = getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -88,6 +96,7 @@ public class DBHandler extends SQLiteOpenHelper {
         database.close();
     }
 
+    //Returning all transactions in the database as a list
     public List<Transaction> getAllTransactions() throws ParseException {
         List<Transaction> initialTransactions = new ArrayList<>();
         String getAllTransactions = "SELECT * FROM Transactions";
@@ -107,7 +116,7 @@ public class DBHandler extends SQLiteOpenHelper {
         return initialTransactions;
     }
 
-
+    //Adding a transaction to the database
     public void logTransaction(Date date, String accountNo, ExpenseType expenseType, double amount) {
         SQLiteDatabase database = this.getWritableDatabase();
         ContentValues values = new ContentValues();

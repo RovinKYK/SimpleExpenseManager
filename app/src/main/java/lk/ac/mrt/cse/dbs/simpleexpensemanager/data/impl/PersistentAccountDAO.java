@@ -20,6 +20,8 @@ public class PersistentAccountDAO implements AccountDAO {
     public PersistentAccountDAO(Context context) {
         dbHandler = DBHandler.getDBHandler(context);
         accounts = new HashMap<>();
+
+        //Accounts in the database loaded as a list and added to accounts hashmap
         List<Account> initialAccounts = dbHandler.getAllAccounts();
         for (Account account: initialAccounts) {
             accounts.put(account.getAccountNo(), account);
@@ -48,7 +50,7 @@ public class PersistentAccountDAO implements AccountDAO {
     @Override
     public void addAccount(Account account) {
         accounts.put(account.getAccountNo(), account);
-        dbHandler.addAccount(account);
+        dbHandler.addAccount(account); //Account added to the database
     }
 
     @Override
@@ -58,7 +60,7 @@ public class PersistentAccountDAO implements AccountDAO {
             throw new InvalidAccountException(msg);
         }
         accounts.remove(accountNo);
-        dbHandler.removeAccount(accountNo);
+        dbHandler.removeAccount(accountNo); //Account removed from database
     }
 
     @Override
@@ -78,6 +80,6 @@ public class PersistentAccountDAO implements AccountDAO {
                 break;
         }
         accounts.put(accountNo, account);
-        dbHandler.updateAccountBalance(account);
+        dbHandler.updateAccountBalance(account); //Account updated in the database
     }
 }

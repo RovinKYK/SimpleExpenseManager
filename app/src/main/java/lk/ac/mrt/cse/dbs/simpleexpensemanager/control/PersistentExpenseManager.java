@@ -14,13 +14,12 @@ import lk.ac.mrt.cse.dbs.simpleexpensemanager.data.impl.PersistentTransactionDAO
 public class PersistentExpenseManager extends ExpenseManager{
     Context context;
 
-    //Constructor
     public PersistentExpenseManager(Context context) throws ExpenseManagerException, ParseException {
         this.context = context;
         setup();
     }
 
-    //Sets the data access objects
+    //Initiating DAOs as persistent DAOs
     @Override
     public void setup() throws ParseException {
         TransactionDAO persistentTransactionDAO = new PersistentTransactionDAO(context);
